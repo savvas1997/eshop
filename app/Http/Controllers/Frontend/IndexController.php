@@ -109,5 +109,17 @@ class IndexController extends Controller
         return view('frontend.product.product_details',compact('product','multiImages'));
     }
 
+    public function tagwiseproduct($tag){
+        $products = Product::where('status',1)->where('product_tags_en',$tag)
+        ->orWhere('product_tags_gr',$tag)->orderBy('id','DESC')->paginate(3);
+        // $products = Product::where('status',1)->where('product_tags_en',$tag)
+        // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
+        //dd($products);
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+
+        return view('frontend.tags.tags_view',compact('products','categories'));
+
+
+    }
 
 }

@@ -114,7 +114,7 @@
                                         @enderror
                                     </div>
                                 
-                            </div>
+                            </div> 
                           </div>
                         </div>
                         {{-- end 2th row --}}

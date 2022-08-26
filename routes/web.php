@@ -149,3 +149,5 @@ Route::get('/language/greek',[LanguageController::class,'greek'])->name('greek.l
 Route::get('/language/english',[LanguageController::class,'english'])->name('english.language');
 
 Route::get('/product/details/{id}/{slug}',[IndexController::class,'productdetails']);
+
+Route::get('/product/tag/{tag}',[IndexController::class,'tagwiseproduct']);
