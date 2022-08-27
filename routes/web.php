@@ -10,7 +10,7 @@ use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Frontend\LanguageController;
-
+use App\Http\Controllers\Frontend\CartController;
 
 use App\Models\User;
 /*
@@ -151,3 +151,12 @@ Route::get('/language/english',[LanguageController::class,'english'])->name('eng
 Route::get('/product/details/{id}/{slug}',[IndexController::class,'productdetails']);
 
 Route::get('/product/tag/{tag}',[IndexController::class,'tagwiseproduct']);
+Route::get('/subcategory/product/{subcat_id}/{slug}',[IndexController::class,'subcatwiseproduct']);
+Route::get('/subsubcategory/product/{subsubcat_id}/{slug}',[IndexController::class,'subsubcatwiseproduct']);
+//Product View MODAL WITH AJAX
+Route::get('/product/view/modal/{id}',[IndexController::class,'productviewAjax']);
+
+Route::post('/cart/data/store/{id}',[CartController::class,'addtocart']);
+
+Route::get('/product/mini/cart',[CartController::class,'addminicart']);
+Route::get('/minicart/product-remove/{rowId}',[CartController::class,'removeminicart']);

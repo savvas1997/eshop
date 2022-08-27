@@ -100,34 +100,34 @@
           <!-- /.top-search-holder -->
           
           <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row"> 
-            <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
+            <!-- =============== SHOPPING CART DROPDOWN ======================================== -->
             
             <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
               <div class="items-cart-inner">
                 <div class="basket"> <i class="glyphicon glyphicon-shopping-cart"></i> </div>
-                <div class="basket-item-count"><span class="count">2</span></div>
-                <div class="total-price-basket"> <span class="lbl">cart -</span> <span class="total-price"> <span class="sign">$</span><span class="value">600.00</span> </span> </div>
+                <div class="basket-item-count"><span class="count" id="cartQty"></span></div>
+                <div class="total-price-basket"> 
+                  <span class="lbl">cart -</span> 
+                  <span class="total-price"> 
+                    <span class="sign">$</span>
+                    <span class="value" id="cartSubTotal"></span> </span> </div>
               </div>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <div class="cart-item product-summary">
-                    <div class="row">
-                      <div class="col-xs-4">
-                        <div class="image"> <a href="detail.html"><img src="{{ asset('frontend/assets/images/cart.jpg')}}" alt=""></a> </div>
-                      </div>
-                      <div class="col-xs-7">
-                        <h3 class="name"><a href="index.php?page-detail">Simple Product</a></h3>
-                        <div class="price">$600.00</div>
-                      </div>
-                      <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
-                    </div>
+                  {{-- //minicart start with ajax --}}
+
+                  <div id="miniCart">
+
                   </div>
+
+                  {{-- //minicart END with ajax --}}
                   <!-- /.cart-item -->
                   <div class="clearfix"></div>
                   <hr>
                   <div class="clearfix cart-total">
-                    <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>$600.00</span> </div>
+                    <div class="pull-right"> <span class="text">Sub Total :</span>
+                      <span class='price' id="cartSubTotal"></span> </div>
                     <div class="clearfix"></div>
                     <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a> </div>
                   <!-- /.cart-total--> 
@@ -138,7 +138,7 @@
             </div>
             <!-- /.dropdown-cart --> 
             
-            <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= --> </div>
+            <!-- ====================== SHOPPING CART DROPDOWN : END======================================= --> </div>
           <!-- /.top-cart-row --> 
         </div>
         <!-- /.row --> 
@@ -189,19 +189,20 @@
 
                                 @foreach($subcategories as $subcategory)
                                   <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
+                                    <a href="{{url('subcategory/product/'.$subcategory->id.'/'.$subcategory->subcategory_slug_en)}}">
                                     <h2 class="title">
                                       @if(session()->get('language')=='greek') 
                                       {{$subcategory->subcategory_name_gr}}
                                       @else {{$subcategory->subcategory_name_en}}
                                       @endif</h2>
-
+                                    </a>
                                     @php
                                     $subsubcategories = App\Models\SubSubCategory::where('subcategory_id',$subcategory->id)->orderBy('subsubcategory_name_en','ASC')->get();
                                      @endphp
                                       @foreach($subsubcategories as $subsubcategory)
                                     <ul class="links">
                                      
-                                      <li><a href="#">
+                                      <li><a href="{{url('subsubcategory/product/'.$subsubcategory->id.'/'.$subsubcategory->subsubcategory_slug_en)}}">
                                         @if(session()->get('language')=='greek') 
                                         {{$subsubcategory->subsubcategory_name_gr}}
                                         @else  {{$subsubcategory->subsubcategory_name_en}}

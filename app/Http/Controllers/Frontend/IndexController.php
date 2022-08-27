@@ -105,8 +105,25 @@ class IndexController extends Controller
 
     public function productdetails($id,$slug){
         $product = Product::findOrFail($id);
+
+        $color_en = $product->product_color_en;
+        $product_color_en = explode(',',$color_en);
+
+        $color_gr = $product->product_color_gr;
+        $product_color_gr = explode(',',$color_gr);
+
+        $size_en = $product->product_size_en;
+        $product_size_en = explode(',',$size_en);
+
+        $size_gr = $product->product_size_gr;
+        $product_size_gr = explode(',',$size_gr);
+
         $multiImages = MultiImg::where('product_id',$id)->get();
-        return view('frontend.product.product_details',compact('product','multiImages'));
+
+        $cat_id = $product->category_id;
+        $relatedProduct = Product::where('category_id',$cat_id)->where('id','!=',$id)->orderBy('id','DESC')->get();
+        return view('frontend.product.product_details',compact('product','multiImages',
+        'product_color_en','product_color_gr','product_size_en','product_size_gr','relatedProduct'));
     }
 
     public function tagwiseproduct($tag){
@@ -122,4 +139,42 @@ class IndexController extends Controller
 
     }
 
+    public function subcatwiseproduct($subcat_id, $slug){
+        $products = Product::where('status',1)->where('subcategory_id',$subcat_id)->orderBy('id','DESC')->paginate(3);
+        // $products = Product::where('status',1)->where('product_tags_en',$tag)
+        // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
+        //dd($products);
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+
+        return view('frontend.product.subcategory_view',compact('products','categories'));
+
+    }
+
+    public function subsubcatwiseproduct($subsubcat_id, $slug){
+        $products = Product::where('status',1)->where('subsubcategory_id',$subsubcat_id)->orderBy('id','DESC')->paginate(3);
+        // $products = Product::where('status',1)->where('product_tags_en',$tag)
+        // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
+        //dd($products);
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+
+        return view('frontend.product.sub_subcategory_view',compact('products','categories'));
+
+    }
+
+    public function productviewAjax($id){
+        $product = Product::with('category','brand')->findOrFail($id);
+
+        $color = $product->product_color_en;
+        $product_color = explode(',',$color);
+        
+        $size = $product->product_size_en;
+        $product_size = explode(',',$size);
+
+        return response()->json(array(
+            'product'=>$product,
+            'color'=>$product_color,
+            'size'=>$product_size,
+
+        ));
+    }
 }
