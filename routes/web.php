@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\Backend\CouponController;
 
 use App\Models\User;
 /*
@@ -122,6 +123,17 @@ Route::prefix('brand')->group(function(){
             Route::get('/active/{id}',[SliderController::class,'slidertactive'])->name('slider.active');
         });
 
+        Route::prefix('coupons')->group(function(){
+            Route::get('/view',[CouponController::class,'couponview'])->name('manage.coupon');
+            Route::post('/store',[CouponController::class,'couponstore'])->name('coupon.store');
+            Route::get('/edit/{id}',[CouponController::class,'editcoupon'])->name('edit.coupon');
+            Route::get('/delete/{id}',[CouponController::class,'deletecoupon'])->name('coupon.delete');
+            Route::post('/update',[CouponController::class,'couponupdate'])->name('coupon.update');
+            
+            
+            
+        });
+
 
 }); //END MIDDLEWARE ADMIN
 
@@ -168,11 +180,13 @@ Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'Use
     Route::get('/get-wishlist-product',[WishlistController::class,'getwishlist']);
     Route::get('//wishlist-remove/{id}',[WishlistController::class,'removewishlistprodut']);
 
-    Route::get('/mycart',[CartPageController::class,'mycart'])->name('mycart');
-    Route::get('/get-cart-product',[CartPageController::class,'getcartproduct']);
-    Route::get('/cart-remove/{rowId}',[CartPageController::class,'cartremove']);
-
 });
 
 Route::post('/add-to-wishlist/{product_id}',[CartController::class,'AddToWishlist']);
 
+
+Route::get('/mycart',[CartPageController::class,'mycart'])->name('mycart');
+Route::get('/get-cart-product',[CartPageController::class,'getcartproduct']);
+Route::get('/cart-remove/{rowId}',[CartPageController::class,'cartremove']);
+Route::get('/cart-increment/{rowId}',[CartPageController::class,'cartIncrement']);
+Route::get('/cart-decrement/{rowId}',[CartPageController::class,'cartDecrement']);

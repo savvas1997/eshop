@@ -492,7 +492,7 @@ miniCart();
    function cart(){
       $.ajax({
           type: 'GET',
-          url: '/user/get-cart-product',
+          url: '/get-cart-product',
           dataType:'json',
           success:function(response){
                
@@ -517,10 +517,15 @@ miniCart();
                               `<strong>${value.options.size} </strong>`}
                         </td>
                         <td class="col-md-2">
-                           
-                              <button type="submit" class="btn btn-success btn-sm">+</button>
-                                <input type="text" value="${value.qty}" min="1" max="100" disabled="" style="width:25px;">
-                                <button type="submit" class="btn btn-danger btn-sm">-</button>
+                           ${value.qty >1 ?
+                           `<button type="submit" class="btn btn-danger btn-sm" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>`
+                           :
+                           `<button type="submit" class="btn btn-danger btn-sm" id="${value.rowId}" onclick="cartDecrement(this.id)" disabled>-</button>`
+                        }
+                           <input type="text" value="${value.qty}" min="1" max="100" disabled="" style="width:25px;">
+                              <button type="submit" class="btn btn-success btn-sm" id="${value.rowId}" onclick="cartIncrement(this.id)">+</button>
+                              
+                                
                         </td>
                         <td class="col-md-1">
                               <strong>${value.subtotal} €</strong>
@@ -544,7 +549,7 @@ miniCart();
 function cartRemove(id){
    $.ajax({
       type: 'GET',
-      url: '/user/cart-remove/'+id,
+      url: '/cart-remove/'+id,
       dataType:'json',
       success:function(data){
          cart(); //with this add when i make an action the result apears imidiately without the need of refress the page
@@ -576,8 +581,44 @@ function cartRemove(id){
       }
    })
 
+
 }
 
+
+
+   function cartIncrement(rowId){
+
+      $.ajax({
+         type: 'GET',
+         url: "/cart-increment/"+rowId,
+         dataType: 'json',
+         success:function(data){
+            cart();
+            miniCart();
+
+
+         }
+      });
+      
+
+   }
+   
+   function cartDecrement(rowId){
+
+      $.ajax({
+         type: 'GET',
+         url: "/cart-decrement/"+rowId,
+         dataType: 'json',
+         success:function(data){
+            cart();
+            miniCart();
+
+
+         }
+      });
+
+
+}
 </script>
 
 </body>
