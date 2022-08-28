@@ -109,7 +109,7 @@
                 <div class="total-price-basket"> 
                   <span class="lbl">cart -</span> 
                   <span class="total-price"> 
-                    <span class="sign">$</span>
+                    <span class="sign">€</span>
                     <span class="value" id="cartSubTotal"></span> </span> </div>
               </div>
               </a>
