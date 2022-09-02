@@ -215,3 +215,9 @@ Route::get('/get-cart-product',[CartPageController::class,'getcartproduct']);
 Route::get('/cart-remove/{rowId}',[CartPageController::class,'cartremove']);
 Route::get('/cart-increment/{rowId}',[CartPageController::class,'cartIncrement']);
 Route::get('/cart-decrement/{rowId}',[CartPageController::class,'cartDecrement']);
+
+Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
+Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
+
+Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+
