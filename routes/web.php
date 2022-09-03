@@ -15,6 +15,9 @@ use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\ShippingAreaController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\StipeController;
+
 
 use App\Models\User;
 /*
@@ -203,7 +206,8 @@ Route::get('/minicart/product-remove/{rowId}',[CartController::class,'removemini
 Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'User'],function(){
     Route::get('/wishlist',[WishlistController::class,'viewWishlist'])->name('wishlist');
     Route::get('/get-wishlist-product',[WishlistController::class,'getwishlist']);
-    Route::get('//wishlist-remove/{id}',[WishlistController::class,'removewishlistprodut']);
+    Route::get('/wishlist-remove/{id}',[WishlistController::class,'removewishlistprodut']);
+    Route::post('/stripe/order', [StipeController::class, 'StripeOrder'])->name('stripe.order');
 
 });
 
@@ -220,4 +224,16 @@ Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
 Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
 
 Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+
+Route::get('/checkout',[CartController::class,'checkoutcreate'])->name('checkout');
+
+Route::get('/district-get/ajax/{division_id}',[CheckoutController::class,'districtgetAjax']);
+Route::get('/state-get/ajax/{district_id}',[CheckoutController::class,'stategetAjax']);
+
+Route::post('/checkout/store',[CheckoutController::class,'checkoutstore'])->name('checkout.store');
+
+
+
+
+
 
