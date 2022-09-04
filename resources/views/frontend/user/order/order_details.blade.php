@@ -131,28 +131,28 @@
                                 <label for="">Price </label>
                             </td>
                         </tr>
-                        @foreach($order_item as $order)
+                        @foreach($order_item as $item)
                         <tr>
                             <td class="col-md-1">
-                                <label for=""><img src="{{asset($order->product->product_thambnail)}}" height="50px;" width="50px;"></label>
+                                <label for=""><img src="{{asset($item->product->product_thambnail)}}" height="50px;" width="50px;"></label>
                             </td>
                             <td class="col-md-1">
-                                <label for="">{{$order->product->product_name_en}} </label>
+                                <label for="">{{$item->product->product_name_en}} </label>
                             </td>
                             <td class="col-md-1">
-                                <label for="">{{$order->product->product_code}} </label>
+                                <label for="">{{$item->product->product_code}} </label>
                             </td>
                             <td class="col-md-1">
-                                <label for="">{{$order->color}} </label>
+                                <label for="">{{$item->color}} </label>
                             </td>
                             <td class="col-md-2">
-                                <label for="">{{$order->size}} </label>
+                                <label for="">{{$item->size}} </label>
                             </td>
                             <td class="col-md-2">
-                                <label for="">{{$order->qty}} </label>
+                                <label for="">{{$item->qty}} </label>
                             </td>
                             <td class="col-md-2">
-                                <label for="">{{$order->price}} ({{$order->price * $order->qty}}) €</label>
+                                <label for="">{{$item->price}} ({{$item->price * $item->qty}}) €</label>
                             </td>
                             
                             
@@ -163,16 +163,31 @@
             </div>
 
             @if($order->status !== "delivered")
-
+            
             @else
-            <div class="form-group">
-                <label for="label">Order Return reason:</label>
-                <textarea class="form-control" name="return_reason" id="" cols="30" rows="05">
-                    Return Reason
-                </textarea>
-            </div>
-            @endif
 
+            @php 
+                $order = App\Models\Order::where('id', $order->id)->where('return_reason','=',NULL)->first();
+            @endphp
+
+                @if($order)
+
+                <form action="{{ route('return.order',$order->id) }}" method="post">
+                    @csrf
+                <div class="form-group">
+                    <label for="label">Order Return reason:</label>
+                    <textarea name="return_reason" id="" class="form-control" cols="30" rows="05">Return Reason</textarea>    
+                
+                </div>
+                <button type="submit" class="btn btn-danger" >Submit</button>
+                </form>
+                @else
+                <span class="badge badge-pill badge-warning" style="background: red">You have send return request for this product</span>
+                @endif
+
+            @endif
+            <br>
+            <br>
         </div>
    
     </div>

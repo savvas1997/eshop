@@ -185,6 +185,7 @@ Route::prefix('brand')->group(function(){
             Route::get('/shipped/delivered/{id}',[OrderController::class,'shippedToDelivered'])->name('shipped.delivered');
             Route::get('/invoice/download/{id}',[OrderController::class,'invoicedownload'])->name('invoice.download');
 
+
             
             
         });
@@ -243,7 +244,12 @@ Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'Use
     Route::get('/invoice_download/{id}',[AllUserController::class,'invoice_download']);
 
 
+    Route::get('/return/order/list/',[AllUserController::class,'returnOrderList'])->name('return.order.list');
+    Route::get('/cancel/order/list/',[AllUserController::class,'cancelOrderList'])->name('cancel.orders');
 
+    Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
+    
+    
 });
 
 Route::post('/add-to-wishlist/{product_id}',[CartController::class,'AddToWishlist']);
