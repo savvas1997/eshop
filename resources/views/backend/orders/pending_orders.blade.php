@@ -36,7 +36,7 @@
 						<tbody>
 							@foreach ($orders as $item)
                             <tr>
-                               
+                                
 								
 								<td>{{$item->order_date}}</td>
 								<td>{{$item->invoice_no}}</td>
@@ -44,8 +44,7 @@
                                 <td >{{$item->payment_method}}</td>
                                 <td ><span class="badge badge-pill badge-primary">{{$item->status}}</span></td>
 								<td width="25%">
-                                    <a href="{{route('pending.order.details',$item->id)}}" class="btn btn-info" title="Edit Coupon"><i class="fa fa-eye" ></i></a>
-                                    <a href="{{route('coupon.delete',$item->id)}}" id="delete" class="btn btn-danger" title="Delete Data"><i class="fa fa-trash" ></i></a>
+                                    <a href="{{route('pending.order.details',$item->id)}}" class="btn btn-info" title="Order Details"><i class="fa fa-eye" ></i></a>
                                 </td>
 							</tr>
 							

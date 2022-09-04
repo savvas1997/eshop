@@ -179,14 +179,12 @@ Route::prefix('brand')->group(function(){
             Route::get('/delivered/orders/',[OrderController::class,'deliveredorders'])->name('delivered.order');
             Route::get('/cancel/orders/',[OrderController::class,'cancelorders'])->name('cancel.order');
             Route::get('/pending/confirm/{id}',[OrderController::class,'pendingToconfirm'])->name('pending-confirm');
+            Route::get('/comfirm/processing/{id}',[OrderController::class,'confirmToProcessing'])->name('confirm.processing');
+            Route::get('/processing/picked/{id}',[OrderController::class,'processingToPicked'])->name('processing.picked');
+            Route::get('/picked/shipped/{id}',[OrderController::class,'pickedToshipped'])->name('picked.shipped');
+            Route::get('/shipped/delivered/{id}',[OrderController::class,'shippedToDelivered'])->name('shipped.delivered');
+            Route::get('/invoice/download/{id}',[OrderController::class,'invoicedownload'])->name('invoice.download');
 
-           
-
-            
-            
-
-            
-            
             
             
         });

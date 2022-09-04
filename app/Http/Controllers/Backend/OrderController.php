@@ -88,7 +88,85 @@ class OrderController extends Controller
         return redirect()->route('pending.orders')->with($notification);
     }
 
+    public function confirmToProcessing($id){
+
+        Order::findOrFail($id)->update([
+            'status'=>'processing',
+
+        ]);
+
+        $notification = array(
+            'message' => 'Updated to Processing Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('pending.orders')->with($notification);
+
+    }
+
+    
+    public function processingToPicked($id){
+
+        Order::findOrFail($id)->update([
+            'status'=>'picked',
+
+        ]);
+
+        $notification = array(
+            'message' => 'Updated to Picked Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('processing.order')->with($notification);
+
+    }
+
+    public function pickedToshipped($id){
+
+        Order::findOrFail($id)->update([
+            'status'=>'shipped',
+
+        ]);
+
+        $notification = array(
+            'message' => 'Order Shipped Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('picked.order')->with($notification);
+
+    }
     
     
+    public function shippedToDelivered($id){
+
+        Order::findOrFail($id)->update([
+            'status'=>'delivered',
+
+        ]);
+
+        $notification = array(
+            'message' => 'Order Delivered Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('shipped.order')->with($notification);
+
+    }
+
+    
+    public function invoicedownload($order_id){
+        $order = Order::with('division','district','state','user')->where('id',$order_id)->first();
+        
+        $order_item = OrderItem::with('product')->where('order_id',$order_id)->orderBy('id','DESC')->get();
+      
+        $pdf = PDF::loadView('backend.orders.order_invoice',compact('order','order_item'))->setPaper('a4')->setOptions([
+            'tempDir' => public_path(),
+            'chroot' => public_path(),
+         ]);
+         return $pdf->download('invoice.pdf');
+         //return view('frontend.user.order.order_invoice',compact('order','order_item'));
+
+    }
 
 }
