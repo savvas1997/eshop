@@ -17,6 +17,11 @@ use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\ShippingAreaController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\StipeController;
+use App\Http\Controllers\User\AllUserController;
+use App\Http\Controllers\User\CashController;
+use App\Http\Controllers\Backend\OrderController;
+
+
 
 
 use App\Models\User;
@@ -163,6 +168,31 @@ Route::prefix('brand')->group(function(){
         });
 
 
+        Route::prefix('orders')->group(function(){
+            Route::get('/pending/orders',[OrderController::class,'pendingorders'])->name('pending.orders');
+          
+            Route::get('/pending/order/details/{id}',[OrderController::class,'pendingorderdetails'])->name('pending.order.details');
+            Route::get('/confirmed/orders/',[OrderController::class,'confirmedorders'])->name('confirm.order');
+            Route::get('/processing/orders/',[OrderController::class,'processingorders'])->name('processing.order');
+            Route::get('/picked/orders/',[OrderController::class,'pickedorders'])->name('picked.order');
+            Route::get('/shipped/orders/',[OrderController::class,'shippedorders'])->name('shipped.order');
+            Route::get('/delivered/orders/',[OrderController::class,'deliveredorders'])->name('delivered.order');
+            Route::get('/cancel/orders/',[OrderController::class,'cancelorders'])->name('cancel.order');
+            Route::get('/pending/confirm/{id}',[OrderController::class,'pendingToconfirm'])->name('pending-confirm');
+
+           
+
+            
+            
+
+            
+            
+            
+            
+        });
+
+
+
 }); //END MIDDLEWARE ADMIN
 
 Route::middleware([
@@ -208,6 +238,13 @@ Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'Use
     Route::get('/get-wishlist-product',[WishlistController::class,'getwishlist']);
     Route::get('/wishlist-remove/{id}',[WishlistController::class,'removewishlistprodut']);
     Route::post('/stripe/order', [StipeController::class, 'StripeOrder'])->name('stripe.order');
+    Route::post('/cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
+
+    Route::get('/my/orders',[AllUserController::class,'myorders'])->name('my.orders');
+    Route::get('/order_details/{id}',[AllUserController::class,'orderdetails']);
+    Route::get('/invoice_download/{id}',[AllUserController::class,'invoice_download']);
+
+
 
 });
 
@@ -232,7 +269,7 @@ Route::get('/state-get/ajax/{district_id}',[CheckoutController::class,'stategetA
 
 Route::post('/checkout/store',[CheckoutController::class,'checkoutstore'])->name('checkout.store');
 
-
+ 
 
 
 
