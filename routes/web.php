@@ -20,6 +20,8 @@ use App\Http\Controllers\User\StipeController;
 use App\Http\Controllers\User\AllUserController;
 use App\Http\Controllers\User\CashController;
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\ReportController;
+
 
 
 
@@ -190,6 +192,25 @@ Route::prefix('brand')->group(function(){
             
         });
 
+        Route::prefix('reports')->group(function(){
+            Route::get('/view',[ReportController::class,'reportview'])->name('all.reports');
+            Route::post('/search/by/date',[ReportController::class,'searchbydate'])->name('searchbydate');
+            Route::post('/search/by/month',[ReportController::class,'ReportByMonth'])->name('search-by-month');
+            Route::post('/search/by/year', [ReportController::class, 'ReportByYear'])->name('search-by-year');
+
+            
+            
+
+        });
+
+        Route::prefix('user')->group(function(){
+            Route::get('/view',[AdminProfileController::class,'allusers'])->name('all.users');
+            
+
+         
+            
+
+        });
 
 
 }); //END MIDDLEWARE ADMIN

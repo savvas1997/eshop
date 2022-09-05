@@ -69,7 +69,7 @@ class StipeController extends Controller
                 'order_number'=>$charge->metadata->order_id,
                 'invoice_no'=>'EOS'.mt_rand(10000000,99999999),
                 'order_date'=>Carbon::now()->format('d F Y'),
-                'order_month'=>Carbon::now()->format('F Y'),
+                'order_month'=>Carbon::now()->format('F'),
                 'order_year'=>Carbon::now()->format('Y'),
                 
                 
