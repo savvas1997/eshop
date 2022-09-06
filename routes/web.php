@@ -21,7 +21,8 @@ use App\Http\Controllers\User\AllUserController;
 use App\Http\Controllers\User\CashController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ReportController;
-
+use App\Http\Controllers\Backend\BlogController;
+use App\Http\Controllers\Frontend\HomeBlogController;
 
 
 
@@ -206,11 +207,30 @@ Route::prefix('brand')->group(function(){
         Route::prefix('user')->group(function(){
             Route::get('/view',[AdminProfileController::class,'allusers'])->name('all.users');
             
+        });
 
-         
+        Route::prefix('blog')->group(function(){
+            Route::get('/category',[BlogController::class,'blogcategory'])->name('blog.category');
+            Route::post('/store/blogcategory',[BlogController::class,'blogcategorystore'])->name('bogcategory.store');
+            Route::get('/edit/blogcategory/{id}',[BlogController::class,'blogcategoryedit'])->name('edit.blogcategory');
+            Route::get('/delete/blogcategory/{id}',[BlogController::class,'blogcategorydelete'])->name('delete.blogcategory');
+            Route::post('/update/blogcategory',[BlogController::class,'blogcategoryupdate'])->name('blogcategory.update');
+
             
+            ///Admin View Blog Post view.post
+            Route::get('/view/post',[BlogController::class,'viewblogpost'])->name('view.post');
+            Route::post('/store/blogpost',[BlogController::class,'blogpoststore'])->name('post-store');
+            Route::get('/add/post',[BlogController::class,'addblogpost'])->name('add.post');
+            Route::get('/edit/blopost/{id}',[BlogController::class,'blogpostedit'])->name('edit.blogpost');
+            Route::post('/update/blogpost',[BlogController::class,'blogpostupdate'])->name('blogpost.update');
+            Route::post('/update/blogpost/image',[BlogController::class,'blogpostimageupdate'])->name('update-post-image');
+            Route::get('/delete/blogpost/{id}',[BlogController::class,'blogpostdelete'])->name('delete.blopost');
+
+
 
         });
+
+
 
 
 }); //END MIDDLEWARE ADMIN
@@ -294,7 +314,14 @@ Route::get('/state-get/ajax/{district_id}',[CheckoutController::class,'stategetA
 
 Route::post('/checkout/store',[CheckoutController::class,'checkoutstore'])->name('checkout.store');
 
- 
+//Home Blog
+
+Route::get('/blog', [HomeBlogController::class, 'blogpost'])->name('home.blog');
+Route::get('/post/details/{id}', [HomeBlogController::class, 'blogpostdetails'])->name('post.details');
+
+
+
+
 
 
 
