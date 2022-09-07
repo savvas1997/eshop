@@ -106,11 +106,12 @@
            
             @foreach($blogcategory as $category)
             <ul class="list-group">
+				<a href="{{url('blog/category/post/'.$category->id)}}">
 
                 <li class="list-group-item disabled" aria-disabled="true">
                     @if(session()->get('language')=='greek'){{$category->blog_category_name_gr}} @else {{$category->blog_category_name_en}}  @endif
                 </li>
-                
+				</a>
               </ul>
               @endforeach
 	        

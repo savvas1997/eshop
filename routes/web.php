@@ -23,6 +23,8 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Frontend\HomeBlogController;
+use App\Http\Controllers\Backend\SiteSettingController;
+
 
 
 
@@ -230,6 +232,14 @@ Route::prefix('brand')->group(function(){
 
         });
 
+        Route::prefix('setting')->group(function(){
+            Route::get('/site',[SiteSettingController::class,'sitesetting'])->name('site.setting');
+            Route::post('/site/update', [SiteSettingController::class, 'SiteSettingUpdate'])->name('update.sitesetting');
+            Route::get('/seo', [SiteSettingController::class, 'SeoSetting'])->name('seo.setting'); 
+            Route::post('/seo/update', [SiteSettingController::class, 'SeoSettingUpdate'])->name('update.seosetting');
+
+        });
+
 
 
 
@@ -318,6 +328,8 @@ Route::post('/checkout/store',[CheckoutController::class,'checkoutstore'])->name
 
 Route::get('/blog', [HomeBlogController::class, 'blogpost'])->name('home.blog');
 Route::get('/post/details/{id}', [HomeBlogController::class, 'blogpostdetails'])->name('post.details');
+Route::get('/blog/category/post/{category_id}', [HomeBlogController::class, 'homeblogcatpost']);
+
 
 
 

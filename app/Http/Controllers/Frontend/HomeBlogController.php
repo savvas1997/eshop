@@ -24,4 +24,11 @@ class HomeBlogController extends Controller
         return view('frontend.blog.blog_details',compact('blogpost','blogcategory'));
     }
 
+    public function homeblogcatpost($category_id){
+        $blogpost = Blogpost::where('category_id',$category_id)->orderBy('id','DESC')->get();
+        $blogcategory = BlogPostCategory::latest()->get();
+
+
+        return view('frontend.blog.blog_cat_list',compact('blogpost','blogcategory'));
+    }
 }
