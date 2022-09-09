@@ -27,14 +27,14 @@
 	<h1>@if(session()->get('language')=='greek'){{$blogpost->title_gr}} @else {{$blogpost->title_en}}  @endif</h1>
 	
 	<span class="date-time">{{Carbon\Carbon::parse($blogpost->created_at)->diffForHumans()}}</span>
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <div class="addthis_inline_share_toolbox"></div>
+
 	<p>@if(session()->get('language')=='greek'){!! $blogpost->details_gr !!} @else {!! $blogpost->details_en !!}  @endif</p>
 	<div class="social-media">
-		<span>share post:</span>
-		<a href="#"><i class="fa fa-facebook"></i></a>
-		<a href="#"><i class="fa fa-twitter"></i></a>
-		<a href="#"><i class="fa fa-linkedin"></i></a>
-		<a href=""><i class="fa fa-rss"></i></a>
-		<a href="" class="hidden-xs"><i class="fa fa-pinterest"></i></a>
+		
+		  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+		  <div class="addthis_inline_share_toolbox"></div>
 	</div>
 </div>
 <div class="blog-write-comment outer-bottom-xs outer-top-xs">
@@ -144,5 +144,7 @@
 	</div>
 </div>
 
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-631b94975251d003"></script>
 
 @endsection

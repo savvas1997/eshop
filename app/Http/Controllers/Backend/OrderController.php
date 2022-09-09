@@ -15,6 +15,8 @@ use Auth;
 use Carbon\Carbon;
 //use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DB;
+use App\Models\Product;
 
 
 class OrderController extends Controller
@@ -139,6 +141,12 @@ class OrderController extends Controller
     
     
     public function shippedToDelivered($id){
+
+        $product = OrderItem::where('order_id',$id)->get();
+            foreach ($product as $item) {
+                Product::where('id',$item->product_id)
+                        ->update(['product_qty' => DB::raw('product_qty-'.$item->qty)]);
+            } 
 
         Order::findOrFail($id)->update([
             'status'=>'delivered',

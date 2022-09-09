@@ -38,6 +38,7 @@ class Order extends Model
         'return_date',
         'return_reason',
         'status',
+        'return_order',
     ];
     public function division(){
         return $this->belongsTo(ShipDivision::class,'division_id','id');

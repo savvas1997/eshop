@@ -24,6 +24,8 @@ use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Frontend\HomeBlogController;
 use App\Http\Controllers\Backend\SiteSettingController;
+use App\Http\Controllers\Backend\ReturnController;
+use App\Http\Controllers\User\ReviewController;
 
 
 
@@ -210,7 +212,7 @@ Route::prefix('brand')->group(function(){
             Route::get('/view',[AdminProfileController::class,'allusers'])->name('all.users');
             
         });
-
+////// BLOG
         Route::prefix('blog')->group(function(){
             Route::get('/category',[BlogController::class,'blogcategory'])->name('blog.category');
             Route::post('/store/blogcategory',[BlogController::class,'blogcategorystore'])->name('bogcategory.store');
@@ -231,7 +233,7 @@ Route::prefix('brand')->group(function(){
 
 
         });
-
+////// SETTINGS SEO
         Route::prefix('setting')->group(function(){
             Route::get('/site',[SiteSettingController::class,'sitesetting'])->name('site.setting');
             Route::post('/site/update', [SiteSettingController::class, 'SiteSettingUpdate'])->name('update.sitesetting');
@@ -239,9 +241,31 @@ Route::prefix('brand')->group(function(){
             Route::post('/seo/update', [SiteSettingController::class, 'SeoSettingUpdate'])->name('update.seosetting');
 
         });
+//////// RETURNS
+        Route::prefix('return')->group(function(){
+            Route::get('/admin/request',[ReturnController::class,'returnrequest'])->name('return.request');
+            Route::get('/admin/all/request',[ReturnController::class,'returnallrequest'])->name('all.request');
+            Route::get('/admin/return/approve/{id}',[ReturnController::class,'returnrequestapprove'])->name('return.approve');
+        });
+//////////  REVIEwS
+    Route::prefix('review')->group(function(){
 
+            Route::get('/pending', [ReviewController::class, 'PendingReview'])->name('pending.review');
+            
+            Route::get('/admin/approve/{id}', [ReviewController::class, 'ReviewApprove'])->name('review.approve');
+            Route::get('/admin/delete/{id}', [ReviewController::class, 'Reviewdelete'])->name('review.delete');
+            
+            Route::get('/admin/all/request', [ReviewController::class, 'allreview'])->name('all.review');
+    
+    });
 
+    // Admin Manage Review Routes 
+    Route::prefix('stock')->group(function(){
 
+        Route::get('/product', [ProductController::class, 'ProductStock'])->name('product.stock');
+    
+    
+    });
 
 }); //END MIDDLEWARE ADMIN
 
@@ -330,7 +354,9 @@ Route::get('/blog', [HomeBlogController::class, 'blogpost'])->name('home.blog');
 Route::get('/post/details/{id}', [HomeBlogController::class, 'blogpostdetails'])->name('post.details');
 Route::get('/blog/category/post/{category_id}', [HomeBlogController::class, 'homeblogcatpost']);
 
+///FrontEnd Review Product
 
+Route::post('/review/store',[ReviewController::class,'reviewstore'])->name('review.store');
 
 
 

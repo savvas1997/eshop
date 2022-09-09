@@ -44,6 +44,8 @@ $seo = App\Models\Seos::find(1);
 {{-- Stripe --}}
 <script src="https://js.stripe.com/v3/"></script>
 
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-631b94975251d003"></script>
 
 
 </head>

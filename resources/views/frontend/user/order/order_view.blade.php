@@ -9,7 +9,7 @@
             <div class="col-md-2">
             </div>
         <div class="col-md-8">
-
+ 
        
         <div class="table-responsive">
             <table class="table">
@@ -49,7 +49,25 @@
                     </td>
                     <td class="col-md-2">
                         <label for=""> 
-                        <span class="badge badge-pill badge-warning" style="background: #418DB9;">{{$order->status}}</span>
+                            @if($order->status == 'Pending')
+                        <span class="badge badge-pill badge-warning" style="background: #800080;">Pending</span>
+                            @elseif($order->status == 'confirm')
+                            <span class="badge badge-pill badge-warning" style="background: #0000FF;">confirm</span>
+                            @elseif($order->status == 'processing')
+                            <span class="badge badge-pill badge-warning" style="background: #FAA500;">processing</span>
+                            @elseif($order->status == 'picked')
+                            <span class="badge badge-pill badge-warning" style="background: #808000;">picked</span>
+                            @elseif($order->status == 'shipped')
+                            <span class="badge badge-pill badge-warning" style="background: #808080;">shipped</span>
+                            @elseif($order->status == 'delivered')
+                            <span class="badge badge-pill badge-warning" style="background: #008000;">delivered</span>
+                            @if($order->return_order == 1)
+                            <span class="badge badge-pill badge-warning" style="background: red;">Return requested</span>
+                            @endif
+                            @else
+                            <span class="badge badge-pill badge-warning" style="background: #FF0000;">Cancel</span>
+
+                        @endif
                     </label>
                     </td>
                     <td class="col-md-1">
