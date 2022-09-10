@@ -12,6 +12,8 @@ use App\Models\Product;
 use App\Models\MultiImg;
 use App\Models\Brand;
 use App\Models\Blog\BlogPost;
+use App\Models\SubCategory;
+use App\Models\SubSubCategory;
 
 
 use Illuminate\Support\Facades\Hash;
@@ -149,8 +151,9 @@ class IndexController extends Controller
         // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
         //dd($products);
         $categories = Category::orderBy('category_name_en','ASC')->get();
+        $breadsubcat = SubCategory::with(['category'])->where('id',$subcat_id)->get();
 
-        return view('frontend.product.subcategory_view',compact('products','categories'));
+        return view('frontend.product.subcategory_view',compact('products','categories','breadsubcat'));
 
     }
 
@@ -159,9 +162,11 @@ class IndexController extends Controller
         // $products = Product::where('status',1)->where('product_tags_en',$tag)
         // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
         //dd($products);
-        $categories = Category::orderBy('category_name_en','ASC')->get();
 
-        return view('frontend.product.sub_subcategory_view',compact('products','categories'));
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+        $breadsubcat = SubSubCategory::with(['category','subcategory'])->where('id',$subsubcat_id)->get();
+
+        return view('frontend.product.sub_subcategory_view',compact('products','categories','breadsubcat'));
 
     }
 
@@ -181,4 +186,16 @@ class IndexController extends Controller
 
         ));
     }
+
+    public function productsearch(Request $request){
+
+        $item = $request->search;
+       // echo "$item";
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+        $products = Product::where('product_name_en','LIKE',"%$item%")->get();
+
+        return view('frontend.product.search',compact('products','categories'));
+    }
+
+
 }
