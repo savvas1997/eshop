@@ -25,6 +25,7 @@ use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Frontend\HomeBlogController;
 use App\Http\Controllers\Backend\SiteSettingController;
 use App\Http\Controllers\Backend\ReturnController;
+use App\Http\Controllers\Backend\AdminUserController;
 use App\Http\Controllers\User\ReviewController;
 
 
@@ -208,7 +209,7 @@ Route::prefix('brand')->group(function(){
 
         });
 
-        Route::prefix('user')->group(function(){
+        Route::prefix('alluser')->group(function(){
             Route::get('/view',[AdminProfileController::class,'allusers'])->name('all.users');
             
         });
@@ -265,6 +266,20 @@ Route::prefix('brand')->group(function(){
         Route::get('/product', [ProductController::class, 'ProductStock'])->name('product.stock');
     
     
+    });
+
+
+    // Admin Manage Roles Routes 
+    Route::prefix('adminuserrole')->group(function(){
+
+        Route::get('/all', [AdminUserController::class, 'alladminrole'])->name('all.admin.user');
+        Route::get('/add', [AdminUserController::class, 'adadminrole'])->name('add.admin');
+        Route::post('/admin/store', [AdminUserController::class, 'adminuserstore'])->name('admin.user.store');
+        Route::get('/edit/{id}', [AdminUserController::class, 'editadminrole'])->name('edit.admin.user');
+        Route::post('/admin/update', [AdminUserController::class, 'adminuserupdate'])->name('admin.user.update');
+        Route::get('/delete/{id}', [AdminUserController::class, 'deleteadminrole'])->name('delete.admin.user');
+    
+        
     });
 
 }); //END MIDDLEWARE ADMIN
@@ -324,6 +339,9 @@ Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'Use
 
     Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
     
+    /// Order Traking Route 
+    Route::post('/order/tracking', [AllUserController::class, 'OrderTraking'])->name('order.tracking');    
+
     
 });
 

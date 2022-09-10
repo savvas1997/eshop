@@ -27,6 +27,24 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'brand',
+        'category',
+        'product',
+        'slider',
+        'coupons',
+        'shipping' ,
+        'blog',
+        'setting',
+        'returnorder',
+        'review',
+        'orders',
+        'stock',
+        'reports',
+        'alluser',
+        'adminuserrole',
+        'type',
+        'profile_photo_path',
     ];
 
     /**
@@ -40,7 +58,7 @@ class Admin extends Authenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
-
+ 
     /**
      * The attributes that should be cast.
      *

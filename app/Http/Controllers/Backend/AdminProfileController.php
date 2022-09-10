@@ -8,30 +8,43 @@ use App\Models\Admin;
 use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Image;
 
 class AdminProfileController extends Controller
 {
-    //
+    // 
     public function adminprofile(){
-        $adminData = Admin::find(1);
+        $id = Auth::user()->id;
+        $adminData = Admin::find($id);
         return view('admin.admin_profile_view',compact('adminData'));
     }
     public function adminprofileEdit(){
-        $editData = Admin::find(1);
+        $id = Auth::user()->id;
+        $editData = Admin::find($id);
         return view('admin.admin_profile_edit',compact('editData'));
     }
     public function adminprofilestore(Request $request){
-        $data = Admin::find(1);
+        $id = Auth::user()->id;
+        $data = Admin::find($id);
+        $old_img = $request->old_image;
 
         $data->name = $request->name;
         $data->email = $request->email;
 
         if($request->file('profile_photo_path')){
             $file = $request->profile_photo_path;
-            @unlink(public_path('upload/admin_images/'.$data->profile_photo_path));
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('upload/admin_images'),$filename);
+            unlink($old_img);
+            $image = $request->profile_photo_path;
+            $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+            Image::make($image)->resize(225,225)->save('upload/admin_images/'.$name_gen);
+            $filename = 'upload/admin_images/'.$name_gen;
+
+
+            //$filename = date('YmdHi').$file->getClientOriginalName();
+            //$file->move(public_path('upload/admin_images'),$filename);
             $data['profile_photo_path'] = $filename;
+
+          
         }
         $data->save();
 
@@ -52,9 +65,9 @@ class AdminProfileController extends Controller
             'password' => 'required|confirmed',
 
         ]);
-        $hashedPassword = Admin::find(1)->password;
+        $hashedPassword = Auth::user()->password;
         if(Hash::check($request->oldpassword,$hashedPassword)){
-              $admin = Admin::find(1);
+              $admin = Admin::find(Auth::id());
               $admin->password = Hash::make($request->password);
               $admin->save();  
               Auth::logout(); 
