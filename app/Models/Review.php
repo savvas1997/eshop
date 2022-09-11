@@ -16,7 +16,7 @@ class Review extends Model
         'comment',
         'summary',
         'status',
-
+        'rating',
     ];
 
     public function product(){

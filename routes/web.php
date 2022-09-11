@@ -377,6 +377,8 @@ Route::get('/blog/category/post/{category_id}', [HomeBlogController::class, 'hom
 Route::post('/review/store',[ReviewController::class,'reviewstore'])->name('review.store');
 
 Route::post('/search',[IndexController::class,'productsearch'])->name('product.search');
+//advance search
+Route::post('/search-product',[IndexController::class,'searchproduct']);
 
 
 

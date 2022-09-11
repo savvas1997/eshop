@@ -37,6 +37,7 @@ class Product extends Model
         'special_offer',
         'special_deals',
         'status',
+        'digital_file',
     ];
 
     public function category(){

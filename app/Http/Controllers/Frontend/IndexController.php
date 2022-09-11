@@ -145,7 +145,7 @@ class IndexController extends Controller
 
     }
 
-    public function subcatwiseproduct($subcat_id, $slug){
+    public function subcatwiseproduct(Request $request,$subcat_id, $slug){
         $products = Product::where('status',1)->where('subcategory_id',$subcat_id)->orderBy('id','DESC')->paginate(3);
         // $products = Product::where('status',1)->where('product_tags_en',$tag)
         // ->where('product_tags_gr',$tag)->orderBy('id','DESC')->get();
@@ -153,10 +153,21 @@ class IndexController extends Controller
         $categories = Category::orderBy('category_name_en','ASC')->get();
         $breadsubcat = SubCategory::with(['category'])->where('id',$subcat_id)->get();
 
+        ///load more product with ajax
+       ///  Load More Product with Ajax 
+		if ($request->ajax()) {
+            $grid_view = view('frontend.product.grid_view_product',compact('products'))->render();
+         
+            $list_view = view('frontend.product.list_view_product',compact('products'))->render();
+             return response()->json(['grid_view' => $grid_view,'list_view',$list_view]);	
+         
+                 }
+                 ///  End Load More Product with Ajax 
+
         return view('frontend.product.subcategory_view',compact('products','categories','breadsubcat'));
 
     }
-
+ 
     public function subsubcatwiseproduct($subsubcat_id, $slug){
         $products = Product::where('status',1)->where('subsubcategory_id',$subsubcat_id)->orderBy('id','DESC')->paginate(3);
         // $products = Product::where('status',1)->where('product_tags_en',$tag)
@@ -188,13 +199,29 @@ class IndexController extends Controller
     }
 
     public function productsearch(Request $request){
-
+        $request->validate([
+            "search" => "required",
+        ]);
+       // dd($request->all());
         $item = $request->search;
        // echo "$item";
         $categories = Category::orderBy('category_name_en','ASC')->get();
         $products = Product::where('product_name_en','LIKE',"%$item%")->get();
 
         return view('frontend.product.search',compact('products','categories'));
+    }
+
+    public function searchproduct(Request $request){
+
+        $request->validate(["search" => "required"]);
+
+		$item = $request->search;		 
+
+		$products = Product::where('product_name_en','LIKE',"%$item%")->select('product_name_en','product_thambnail','selling_price','id','product_slug_en')->limit(5)->get();
+		return view('frontend.product.search_product',compact('products'));
+
+
+ 
     }
 
 

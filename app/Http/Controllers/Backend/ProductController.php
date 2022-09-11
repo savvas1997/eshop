@@ -30,7 +30,16 @@ class ProductController extends Controller
      Image::make($image)->resize(917,1000)->save('upload/products/thambnail/'.$name_gen);
      $save_url = 'upload/products/thambnail/'.$name_gen;
 
+     $request->validate([
+          'file' => 'required|mimes:jpeg,png,jpg,zip,pdf|max:2048',
+        ]);
 
+        if ($files = $request->file('file')) {
+          $destinationPath = 'upload/pdf'; // upload path
+          $digitalItem = date('YmdHis') . "." . $files->getClientOriginalExtension();
+          $files->move($destinationPath,$digitalItem);
+        }
+    
     $product_id = Product::insertGetId([
           'brand_id' => $request->brand_id,
           'category_id'=> $request->category_id,
@@ -59,6 +68,7 @@ class ProductController extends Controller
           'featured'=> $request->featured,
           'special_offer'=> $request->special_offer,
           'special_deals'=> $request->special_deals,
+          'digital_file' => $digitalItem,
           'status'=> 1,
           'created_at' => Carbon::now(),
      ]);

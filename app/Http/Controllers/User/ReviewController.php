@@ -22,6 +22,8 @@ class ReviewController extends Controller
             'user_id' => Auth::id(),
             'comment' => $request->comment,
             'summary' => $request->summary,
+            'rating' => $request->quality,
+
             'created_at' => Carbon::now(),
 
         ]);
@@ -58,7 +60,7 @@ class ReviewController extends Controller
     }
 
     public function Reviewdelete($id){
-
+ 
         Review::findOrFail($id)->delete();
 
         $notification = array(
