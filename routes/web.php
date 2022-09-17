@@ -27,6 +27,7 @@ use App\Http\Controllers\Backend\SiteSettingController;
 use App\Http\Controllers\Backend\ReturnController;
 use App\Http\Controllers\Backend\AdminUserController;
 use App\Http\Controllers\User\ReviewController;
+use App\Http\Controllers\Frontend\ShopController;
 
 
 
@@ -379,6 +380,11 @@ Route::post('/review/store',[ReviewController::class,'reviewstore'])->name('revi
 Route::post('/search',[IndexController::class,'productsearch'])->name('product.search');
 //advance search
 Route::post('/search-product',[IndexController::class,'searchproduct']);
+
+Route::get('/shop',[ShopController::class,'shoppage'])->name('shop.page');
+Route::post('/shop/filter', [ShopController::class, 'ShopFilter'])->name('shop.filter');
+
+
 
 
 

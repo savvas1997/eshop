@@ -2,7 +2,7 @@
 @section('content')
 
 @section('title')
-Sub-SubCategory Product 
+Shop Page 
 @endsection
 
 
@@ -11,16 +11,8 @@ Sub-SubCategory Product
     <div class="container">
       <div class="breadcrumb-inner">
         <ul class="list-inline list-unstyled">
-          <li><a href="#">Home</a></li>
-          @foreach($breadsubcat as $item)
-          <li class='active'>{{$item->category->category_name_en}}</li>
-          @endforeach
-          @foreach($breadsubcat as $item)
-          <li class='active'>{{$item->subcategory->subcategory_name_en}}</li>
-          @endforeach
-          @foreach($breadsubcat as $item)
-          <li class='active'>{{$item->subsubcategory_name_en}}</li>
-          @endforeach
+          <li><a href="#">Shop Page</a></li>
+         
         </ul>
       </div>
       <!-- /.breadcrumb-inner --> 
@@ -30,6 +22,9 @@ Sub-SubCategory Product
   <!-- /.breadcrumb -->
   <div class="body-content outer-top-xs">
     <div class='container'>
+        <form action="{{ route('shop.filter') }}" method="post">
+            @csrf
+       
       <div class='row'>
         <div class='col-md-3 sidebar'> 
           <!-- ================================== TOP NAVIGATION ================================== -->
@@ -47,42 +42,35 @@ Sub-SubCategory Product
                 <div class="sidebar-widget-body">
                   <div class="accordion">
 
+                    @if(!empty($_GET['category']))
+                       @php
+                        $filterCat = explode(',',$_GET['category'])
+                       @endphp
+                    
+
+
+                    @endif
+
+
                     @foreach($categories as $category)
                         <div class="accordion-group">
-                        <div class="accordion-heading"> 
-                            <a href="#collapse{{$category->id}}" data-toggle="collapse" class="accordion-toggle collapsed"> 
-                                @if(session()->get('language')=='greek'){{$category->category_name_gr}}
-                                @else {{$category->category_name_en}}
-                                @endif 
-                            </a> 
-                        </div>
-                        <!-- /.accordion-heading -->
-                        <div class="accordion-body collapse" id="collapse{{$category->id}}" style="height: 0px;">
-                            <div class="accordion-inner">
-
-                            @php
-                            $subcategories = App\Models\SubCategory::where('category_id',$category->id)->orderBy('subcategory_name_en','ASC')->get();
-                                @endphp
-            
-                                @foreach($subcategories as $subcategory)
-                                    <ul>
-                                        <li>
-                                            <a href="{{url('subcategory/product/'.$subcategory->id.'/'.$subcategory->subcategory_slug_en)}}">
-                                            @if(session()->get('language')=='greek'){{$subcategory->subcategory_name_gr}}
-                                            @else {{$subcategory->subcategory_name_en}}
-                                            @endif    
-                                            </a>
-                                        </li>
-                                       
-                                    </ul>
-                                @endforeach
-
+                            <div class="accordion-heading"> 
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="category[]" value="{{$category->category_slug_en}}"
+                                        @if(!empty($filterCat) && in_array($category->category_slug_en,$filterCat)) checked @endif
+                                    onchange="this.form.submit()">
+                                    @if(session()->get('language')=='greek') 
+                                        {{$category->category_name_gr}}
+                                    @else 
+                                        {{$category->category_name_en}}
+                                        @endif
+                                </label>
                             </div>
-                            <!-- /.accordion-inner --> 
+                       
+                       
+                        
                         </div>
-                        <!-- /.accordion-body --> 
-                        </div>
-                        <!-- /.accordion-group -->
+                        
                     @endforeach
                     
                   </div>
@@ -91,6 +79,63 @@ Sub-SubCategory Product
                 <!-- /.sidebar-widget-body --> 
               </div>
               <!-- /.sidebar-widget --> 
+
+
+
+
+              <div class="sidebar-widget wow fadeInUp">
+                <h3 class="section-title">shop by</h3>
+                <div class="widget-header">
+                  <h4 class="widget-title">Brand</h4>
+                </div>
+                <div class="sidebar-widget-body">
+                  <div class="accordion">
+
+                    @if(!empty($_GET['brand']))
+                       @php
+                        $filterBrand = explode(',',$_GET['brand'])
+                       @endphp
+                    
+
+
+                    @endif
+
+
+                    @foreach($brands as $brand)
+                        <div class="accordion-group">
+                            <div class="accordion-heading"> 
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="brand[]" value="{{$brand->brand_slug_en}}"
+                                        @if(!empty($filterBrand) && in_array($brand->brand_slug_en,$filterBrand)) checked @endif
+                                    onchange="this.form.submit()">
+                                    @if(session()->get('language')=='greek') 
+                                        {{$brand->brand_name_gr}}
+                                    @else 
+                                        {{$brand->brand_name_en}}
+                                        @endif
+                                </label>
+                            </div>
+                       
+                       
+                        
+                        </div>
+                        
+                    @endforeach
+                    
+                  </div>
+                  <!-- /.accordion --> 
+                </div>
+                <!-- /.sidebar-widget-body --> 
+              </div>
+              <!-- /.sidebar-widget --> 
+
+
+
+
+
+
+
+
               <!-- ============================================== SIDEBAR CATEGORY : END ============================================== --> 
               
               <!-- ============================================== PRICE SILDER============================================== -->
@@ -198,15 +243,7 @@ Sub-SubCategory Product
             </div>
           </div>
            
-          @foreach($breadsubcat as $item)
-          <span class="badge badge-danger" style="background: #808080">{{$item->category->category_name_en}}</span>
-          @endforeach
-          @foreach($breadsubcat as $item)
-          <span class="badge badge-danger" style="background: #560f0f">{{$item->subcategory->subcategory_name_en}}</span>
-          @endforeach
-          @foreach($breadsubcat as $item)
-          <span class="badge badge-danger" style="background: #138e0b">{{$item->subsubcategory_name_en}}</span>
-          @endforeach
+       
        
           <div class="clearfix filters-container m-t-10">
             <div class="row">
@@ -283,7 +320,9 @@ Sub-SubCategory Product
                       <div class="products">
                         <div class="product">
                           <div class="product-image">
-                            <div class="image"> <a href="{{url('product/details/'.$product->id.'/'.$product->product_slug_en)}}"><img  src="{{ asset($product->product_thambnail)}}" alt=""></a> </div>
+                            <div class="image"> 
+                                <a href="{{url('product/details/'.$product->id.'/'.$product->product_slug_en)}}"> <img  src="{{ asset($product->product_thambnail)}}" alt=""></a>
+                            </div>
                             <!-- /.image -->
                                
                               @php
@@ -471,15 +510,10 @@ Sub-SubCategory Product
               
             </div>
             <!-- /.tab-content -->
-            <div class="clearfix filters-container">
-              <div class="text-right">
-                <div class="pagination-container">
-                  <ul class="list-inline list-unstyled">
-                    {{$products->links()}}
-                  </ul>
-                  <!-- /.list-inline --> 
-                </div>
-                <!-- /.pagination-container --> </div>
+           
+                {{-- {{$products->appends($_GET)->links('vendor.pagination.custom')}} --}}
+
+            </div>
               <!-- /.text-right --> 
               
             </div>
@@ -532,7 +566,10 @@ Sub-SubCategory Product
         
       </div>
       <!-- /.logo-slider --> 
-      <!-- ============================================== BRANDS CAROUSEL : END ============================================== --> </div>
+      <!-- ============================================== BRANDS CAROUSEL : END ============================================== --> 
+    </form>
+
+    </div>
     <!-- /.container --> 
     
   </div>
